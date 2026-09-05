@@ -157,7 +157,7 @@
 
      कुल 6 AD SLOTS हैं:
        - 1 ऊपर (top)          -> 300x250
-       - 1 नीचे (bottom)      -> 300x250
+       - 1 नीचे (bottom)      -> 728x90 (banner, mobile par auto-scale ho jayega)
        - 4 साइड (side)        -> 300x250 (हर तरफ 2-2, सिर्फ बड़ी स्क्रीन/लैपटॉप पर दिखेंगे,
                                   मोबाइल पर हाइड रहेंगे ताकि मोबाइल तेज़ खुले)
      ============================================================================ */
@@ -171,15 +171,30 @@
     position:relative;
     z-index:1;
   }
-  /* ऊपर वाला स्लॉट — यहाँ लगाओ: 300x250 */
-  .ad-slot-top{
-    width:300px;
-    height:250px;
+  /* ऊपर/नीचे वाले banner (728x90) ka outer wrapper — chhoti screen par JS ise
+     automatically scale kar dega taaki overflow na ho aur mobile fast rahe */
+  .ad-slot-banner-outer{
+    width:100%;
+    max-width:728px;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
   }
-  /* नीचे वाला स्लॉट — यहाँ लगाओ: 300x250 */
+  /* ऊपर वाला स्लॉट — यहाँ लगाओ: 728x90 */
+  .ad-slot-top{
+    width:728px;
+    height:90px;
+    margin:0;
+    transform-origin: center top;
+  }
+  /* नीचे वाला स्लॉट — यहाँ लगाओ: 728x90 */
   .ad-slot-bottom{
-    width:300px;
-    height:250px;
+    width:728px;
+    height:90px;
+    margin:0;
+    transform-origin: center top;
   }
   /* साइड वाले 4 स्लॉट (हर तरफ 2-2) — सिर्फ बड़ी स्क्रीन (लैपटॉप/डेस्कटॉप) पर दिखेंगे
      यहाँ लगाओ: हर एक में 300x250 */
@@ -221,24 +236,70 @@
 <!-- ===== साइड के 4 AD (सिर्फ बड़ी स्क्रीन पर दिखेंगे, मोबाइल पर नहीं — मोबाइल तेज़ खुलेगा) ===== -->
 <!-- हर एक में लगाओ: 300x250 -->
 <div class="ad-slot ad-slot-side ad-slot-side-left ad-slot-side-top" id="adSlotSideLeftTop">
-  <!-- यहाँ बाईं तरफ ऊपर का Ad Code पेस्ट करो -->
+  <script>
+    atOptions = {
+      'key' : 'f0cac173bafc51d985c113dfd51e2d3c',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
 </div>
 <div class="ad-slot ad-slot-side ad-slot-side-left ad-slot-side-bottom" id="adSlotSideLeftBottom">
-  <!-- यहाँ बाईं तरफ नीचे का Ad Code पेस्ट करो -->
+  <script>
+    atOptions = {
+      'key' : 'f0cac173bafc51d985c113dfd51e2d3c',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
 </div>
 <div class="ad-slot ad-slot-side ad-slot-side-right ad-slot-side-top" id="adSlotSideRightTop">
-  <!-- यहाँ दाईं तरफ ऊपर का Ad Code पेस्ट करो -->
+  <script>
+    atOptions = {
+      'key' : 'f0cac173bafc51d985c113dfd51e2d3c',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
 </div>
 <div class="ad-slot ad-slot-side ad-slot-side-right ad-slot-side-bottom" id="adSlotSideRightBottom">
-  <!-- यहाँ दाईं तरफ नीचे का Ad Code पेस्ट करो -->
+  <script>
+    atOptions = {
+      'key' : 'f0cac173bafc51d985c113dfd51e2d3c',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
 </div>
 
 <div class="container">
 
-  <!-- ===== ऊपर वाला AD (फोटो के ऊपर) ===== -->
-  <!-- यहाँ लगाओ: 300x250 -->
-  <div class="ad-slot ad-slot-top" id="adSlotTop">
-    <!-- यहाँ अपना Ad Code (script/ins/iframe) पेस्ट करो -->
+  <!-- ===== ऊपर वाला AD (फोटो के ऊपर) — 728x90 ===== -->
+  <div class="ad-slot-banner-outer" id="adSlotTopOuter">
+    <div class="ad-slot ad-slot-top" id="adSlotTop">
+      <script>
+        atOptions = {
+          'key' : '5dc66f728ce5aeb79e1fdfa1f1ec199e',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/5dc66f728ce5aeb79e1fdfa1f1ec199e/invoke.js"></script>
+    </div>
   </div>
 
   <div class="canvas-wrap" id="canvasWrap">
@@ -272,10 +333,20 @@
     <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
   </div>
 
-  <!-- ===== नीचे वाला AD ===== -->
-  <!-- यहाँ लगाओ: 300x250 -->
-  <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
-    <!-- यहाँ अपना Ad Code पेस्ट करो -->
+  <!-- ===== नीचे वाला AD — 728x90 ===== -->
+  <div class="ad-slot-banner-outer" id="adSlotBottomOuter">
+    <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
+      <script>
+        atOptions = {
+          'key' : '5dc66f728ce5aeb79e1fdfa1f1ec199e',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/5dc66f728ce5aeb79e1fdfa1f1ec199e/invoke.js"></script>
+    </div>
   </div>
 
 </div>
@@ -287,8 +358,8 @@
    SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
    ================================================================ */
 const IMAGE_FILENAME = "background.jpg";   // अपनी फोटो का नाम
-const OCCASION_NAME  = "जन्मदिन";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
-const BRAND_TEXT     = "AiTricker";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
+const OCCASION_NAME  = "Teachers Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
+const BRAND_TEXT     = "AiMaster";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
 /* ================================================================ */
 
 // इन सबको ऊपर वाले 3 वेरिएबल से ऑटोमेटिक बना दिया जाता है — यहाँ कुछ बदलने की ज़रूरत नहीं
@@ -415,11 +486,40 @@ render();
    AD SLOT AUTO-HIDE — अगर किसी slot में कोई ad code नहीं डाला गया है (यानी
    div खाली है), तो वो जगह अपने आप गायब हो जाएगी। कोई खाली/टूटा बॉक्स नहीं दिखेगा।
    ============================================================================ */
-<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/700x90_adsterra_reff.gif" /></a>
+function hideEmptyAdSlots(){
+  document.querySelectorAll('.ad-slot').forEach(function(slot){
+    const hasContent = slot.innerHTML.trim().length > 0;
+    if(!hasContent){
+      slot.classList.add('ad-slot-empty');
+    } else {
+      slot.classList.remove('ad-slot-empty');
+    }
+  });
+}
 // Page load hote hi check karo
 hideEmptyAdSlots();
 // Kuch ad networks apna code thodi der baad (async) inject karte hain, isliye 2 second baad dobara check
 setTimeout(hideEmptyAdSlots, 2000);
+
+/* ============================================================================
+   BANNER (728x90) AUTO-SCALE — chhoti screen (mobile) par 728px chaudi ad
+   overflow na ho, isliye JS se poore banner ko container ki width ke hisaab
+   se scale kar diya jaata hai. Isse ad load bhi normal size mein hoti hai,
+   bas visually chhoti dikhti hai — mobile par bilkul fit ho jaati hai.
+   ============================================================================ */
+function scaleBannerAds(){
+  document.querySelectorAll('.ad-slot-banner-outer').forEach(function(outer){
+    const inner = outer.querySelector('.ad-slot');
+    if(!inner) return;
+    const scale = Math.min(1, outer.clientWidth / 728);
+    inner.style.transform = `scale(${scale})`;
+    outer.style.height = Math.round(90 * scale) + 'px';
+  });
+}
+scaleBannerAds();
+window.addEventListener('resize', scaleBannerAds);
+// Ad inject hone ke baad bhi dobara scale set karo
+setTimeout(scaleBannerAds, 2000);
 /* ============================================================================ */
 
 /* ============ SPARKLE BACKGROUND (mobile par halka rakha gaya hai) ============ */
