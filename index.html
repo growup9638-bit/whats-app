@@ -1,9 +1,13 @@
-<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#2b0a0a" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="preload" as="image" href="background.jpg" />
 <title id="pageTitle">Shubhkamnaye - अपना नाम लिखें</title>
 
 <meta property="og:title" content="Shubhkamnaye 🪔" id="ogTitle" />
@@ -12,7 +16,8 @@
 <meta property="og:type" content="website" />
 
 <style>
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{ touch-action:manipulation; }
   body{
     font-family:'Segoe UI', Arial, sans-serif;
     background:linear-gradient(180deg, #2b0a0a 0%, #4a0e0e 50%, #2b0a0a 100%);
@@ -144,6 +149,49 @@
   }
 
   .icon{ width:22px; height:22px; }
+
+  /* ============================================================================
+     AD SLOTS — यहाँ अपने Ad Network (AdSense/Adsterra/Monetag) का <script> या
+     <ins>/<iframe> कोड पेस्ट करना है। जब तक कुछ पेस्ट नहीं करोगे, ये जगह
+     अपने आप छुप जाएगी (नीचे JS में) — कोई खाली बॉक्स नहीं दिखेगा।
+     ============================================================================ */
+  .ad-slot{
+    max-width:100%;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  /* ऊपर वाला स्लॉट — यहाँ लगाओ: GIF 300x250 (सबसे बेस्ट) / 250x250 / 200x200 / 160x90 */
+  <a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
+  /* नीचे वाला बड़ा स्लॉट — यहाँ लगाओ: GIF 300x425 / 300x250 */
+ <a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
+  /* नीचे वाला छोटा स्लॉट — यहाँ लगाओ: GIF 120x150 */
+ <a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/120x150_adsterra_reff.gif" /></a>
+  /* साइड स्काईस्क्रेपर — सिर्फ बड़ी स्क्रीन (लैपटॉप/डेस्कटॉप) पर दिखेगा
+     यहाँ लगाओ: GIF 160x600 (बेस्ट) / 120x600 / 120x300 */
+  .ad-slot-side{
+    width:160px;
+    height:600px;
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    display:none; /* mobile par hidden — neeche media query mein show hoga */
+  }
+  .ad-slot-side-left{ left:12px; }
+  .ad-slot-side-right{ right:12px; }
+  @media (min-width: 900px){
+    .ad-slot-side{ display:flex; }
+  }
+  /* JS isme ad code detect na hone par 'ad-slot-empty' class laga dega — tab poori jagah gayab ho jayegi */
+  .ad-slot-empty{
+    display:none !important;
+  }
+  /* ============================================================================ */
+
   .toast{
     position:fixed; bottom:24px; left:50%;
     transform:translateX(-50%) translateY(100px);
@@ -159,7 +207,22 @@
 
 <canvas id="sparkleCanvas"></canvas>
 
+<!-- ===== साइड स्काईस्क्रेपर AD (सिर्फ बड़ी स्क्रीन पर दिखेंगे) ===== -->
+<!-- यहाँ लगाओ: GIF 160x600 / 120x600 / 120x300 -->
+<div class="ad-slot ad-slot-side ad-slot-side-left" id="adSlotSideLeft">
+  <!-- यहाँ बाईं तरफ का Ad Code पेस्ट करो -->
+</div>
+<div class="ad-slot ad-slot-side ad-slot-side-right" id="adSlotSideRight">
+  <!-- यहाँ दाईं तरफ का Ad Code पेस्ट करो -->
+</div>
+
 <div class="container">
+
+  <!-- ===== ऊपर वाला AD (फोटो के ऊपर) ===== -->
+  <!-- यहाँ लगाओ: GIF 300x250 (बेस्ट) / 250x250 / 200x200 / 160x90 -->
+<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
+    <!-- यहाँ अपना Ad Code (script/ins/iframe) पेस्ट करो -->
+  </div>
 
   <div class="canvas-wrap" id="canvasWrap">
     <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
@@ -192,6 +255,18 @@
     <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
   </div>
 
+  <!-- ===== नीचे वाला बड़ा AD ===== -->
+  <!-- यहाँ लगाओ: GIF 300x425 / 300x250 -->
+  <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
+    <!-- यहाँ अपना Ad Code पेस्ट करो -->
+  </div>
+
+  <!-- ===== नीचे वाला छोटा AD ===== -->
+  <!-- यहाँ लगाओ: GIF 120x150 -->
+  <div class="ad-slot ad-slot-small" id="adSlotSmall">
+    <!-- यहाँ अपना Ad Code पेस्ट करो -->
+  </div>
+
 </div>
 
 <div class="toast" id="toast">Link copy ho gaya!</div>
@@ -201,7 +276,7 @@
    SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
    ================================================================ */
 const IMAGE_FILENAME = "background.jpg";   // अपनी फोटो का नाम
-const OCCASION_NAME  = "Happy Teacher's Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
+const OCCASION_NAME  = "Teacher's Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
 const BRAND_TEXT     = "Bhavesh";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
 /* ================================================================ */
 
@@ -237,9 +312,18 @@ function render(){
 const img = new Image();
 img.onload = function(){
   bgImage = img;
-  // Canvas ka size aur box ka shape, image ke asli aspect ratio ke hisaab se set karo
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
+  // Bade/heavy photo ka size mobile ke liye kam karo (max 1000px width) —
+  // isse loading aur rendering dono mobile par fast rahenge
+  const MAX_DIMENSION = 1000;
+  let w = img.naturalWidth;
+  let h = img.naturalHeight;
+  if(w > MAX_DIMENSION || h > MAX_DIMENSION){
+    const scale = MAX_DIMENSION / Math.max(w, h);
+    w = Math.round(w * scale);
+    h = Math.round(h * scale);
+  }
+  canvas.width = w;
+  canvas.height = h;
   canvasWrap.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
   loadingDiv.style.display = 'none';
   render();
@@ -316,10 +400,35 @@ document.getElementById('telegramBtn').addEventListener('click', function(){
 
 render();
 
-/* ============ SPARKLE BACKGROUND ============ */
+/* ============================================================================
+   AD SLOT AUTO-HIDE — अगर किसी slot में कोई ad code नहीं डाला गया है (यानी
+   div खाली है), तो वो जगह अपने आप गायब हो जाएगी। कोई खाली/टूटा बॉक्स नहीं दिखेगा।
+   ============================================================================ */
+function hideEmptyAdSlots(){
+  document.querySelectorAll('.ad-slot').forEach(function(slot){
+    const hasContent = slot.innerHTML.trim().length > 0;
+    if(!hasContent){
+      slot.classList.add('ad-slot-empty');
+    } else {
+      slot.classList.remove('ad-slot-empty');
+    }
+  });
+}
+// Page load hote hi check karo
+hideEmptyAdSlots();
+// Kuch ad networks apna code thodi der baad (async) inject karte hain, isliye 2 second baad dobara check
+setTimeout(hideEmptyAdSlots, 2000);
+/* ============================================================================ */
+
+/* ============ SPARKLE BACKGROUND (mobile par halka rakha gaya hai) ============ */
 const sparkleCanvas = document.getElementById('sparkleCanvas');
 const sctx = sparkleCanvas.getContext('2d');
 let particles = [];
+
+// Chhoti screen (mobile) par kam particles aur halka glow — smooth performance ke liye
+const isMobile = window.innerWidth < 700;
+const PARTICLE_COUNT = isMobile ? 25 : 60;
+const SHADOW_BLUR = isMobile ? 0 : 6;
 
 function resizeSparkle(){
   sparkleCanvas.width = window.innerWidth;
@@ -339,7 +448,7 @@ function createParticle(){
     twinkleSpeed: Math.random() * 0.05 + 0.02
   };
 }
-for(let i=0; i<60; i++){
+for(let i=0; i<PARTICLE_COUNT; i++){
   const p = createParticle();
   p.y = Math.random() * sparkleCanvas.height;
   particles.push(p);
@@ -359,8 +468,10 @@ function animateSparkles(){
     sctx.beginPath();
     sctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     sctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
-    sctx.shadowBlur = 6;
-    sctx.shadowColor = 'rgba(255,215,0,0.8)';
+    if(SHADOW_BLUR > 0){
+      sctx.shadowBlur = SHADOW_BLUR;
+      sctx.shadowColor = 'rgba(255,215,0,0.8)';
+    }
     sctx.fill();
   });
   requestAnimationFrame(animateSparkles);
@@ -370,4 +481,3 @@ animateSparkles();
 
 </body>
 </html>
-<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
