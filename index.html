@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="pageTitle">Happy Teacher's Day - अपना नाम लिखें</title>
+
+<meta property="og:title" content="Happy Teacher's Day 🪔" id="ogTitle" />
+<meta property="og:description" content="Aapke liye kisi ne shubhkamnaye bheji hain!" id="ogDesc" />
+<meta property="og:image" content="background.jpg" />
+<meta property="og:type" content="website" />
+
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:linear-gradient(180deg, #2b0a0a 0%, #4a0e0e 50%, #2b0a0a 100%);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:24px 16px 60px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  #sparkleCanvas{
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index:0;
+  }
+  .container{
+    width:100%;
+    max-width:420px;
+    text-align:center;
+    position:relative;
+    z-index:1;
+  }
+  .canvas-wrap{
+    width:100%;
+    aspect-ratio:4/3;
+    border-radius:16px;
+    overflow:hidden;
+    margin-bottom:22px;
+    box-shadow:0 0 0 3px #ffd700, 0 0 30px rgba(255,215,0,0.5);
+    position:relative;
+    background:#111;
+  }
+  canvas.mainCanvas{ width:100%; height:100%; display:block; }
+  .loading{
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    display:flex; align-items:center; justify-content:center;
+    background:#111; color:#ffd700; font-size:14px;
+  }
+  h1.title{
+    color:#ffd700;
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:6px;
+    line-height:1.3;
+    text-shadow:0 0 15px rgba(255,215,0,0.7), 0 2px 10px rgba(0,0,0,0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  h1.title .sender-name{
+    color:#fff;
+  }
+  @keyframes glow{
+    from{ text-shadow:0 0 10px rgba(255,215,0,0.5); }
+    to{ text-shadow:0 0 25px rgba(255,215,0,0.9); }
+  }
+  p.brand{
+    color:#f5f5f5;
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:20px;
+    opacity:0.9;
+  }
+  p.subMsg{
+    color:#f0e6d2;
+    font-size:14px;
+    margin-bottom:24px;
+    opacity:0.85;
+  }
+  label.field-label{
+    display:block;
+    color:#f0f0f0;
+    font-size:15px;
+    margin-bottom:10px;
+  }
+  input[type="text"]{
+    width:100%;
+    padding:16px 18px;
+    border-radius:12px;
+    border:2px solid transparent;
+    font-size:16px;
+    background:#fdf6e3;
+    color:#333;
+    margin-bottom:20px;
+    text-align:center;
+    outline:none;
+  }
+  input[type="text"]:focus{ border-color:#ffd700; }
+
+  button.share-btn{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    font-size:17px;
+    font-weight:700;
+    color:#fff;
+    background:#25D366;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    box-shadow:0 6px 18px rgba(37,211,102,0.4);
+    margin-bottom:12px;
+  }
+  button.share-btn:active{ transform:scale(0.98); }
+
+  button.telegram-btn{
+    background:#229ED9;
+    box-shadow:0 6px 18px rgba(34,158,217,0.4);
+  }
+
+  button.create-own-btn{
+    width:100%;
+    padding:16px;
+    border-radius:14px;
+    font-size:15px;
+    font-weight:700;
+    color:#2b0a0a;
+    background:#ffd700;
+    border:none;
+    cursor:pointer;
+    margin-top:8px;
+  }
+
+  .icon{ width:22px; height:22px; }
+  .toast{
+    position:fixed; bottom:24px; left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:#222; color:#fff;
+    padding:12px 20px; border-radius:10px;
+    font-size:14px; opacity:0; transition:all 0.3s; z-index:10;
+  }
+  .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<canvas id="sparkleCanvas"></canvas>
+
+<div class="container">
+
+  <div class="canvas-wrap">
+    <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
+    <div class="loading" id="loadingDiv">Photo load ho rahi hai...</div>
+  </div>
+
+  <h1 class="title" id="titleText">शुभ दीपावली!</h1>
+  <p class="brand" id="brandText">AiTricker की ओर से</p>
+
+  <!-- ===== SENDER VIEW: naam likh kar link banaye ===== -->
+  <div id="senderView">
+    <p class="subMsg">Apna naam likho aur link banao — jise bhi bhejoge, usme tumhara naam dikhega!</p>
+    <label class="field-label">आपका नाम:</label>
+    <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें" maxlength="30" />
+
+    <button class="share-btn" id="shareBtn">
+      <svg class="icon" viewBox="0 0 32 32" fill="white"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.627.86 5.062 2.313 7.031L4.938 27.5l5.625-1.406A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 21.75a9.7 9.7 0 0 1-4.95-1.35l-.354-.21-3.338.834.89-3.253-.23-.335A9.7 9.7 0 0 1 6.25 15c0-5.385 4.365-9.75 9.75-9.75S25.75 9.615 25.75 15 21.385 24.75 16 24.75zm5.35-7.29c-.293-.147-1.733-.856-2.002-.953-.268-.098-.463-.147-.658.147-.195.293-.756.953-.927 1.148-.171.196-.342.22-.635.073-.293-.147-1.237-.456-2.357-1.454-.871-.777-1.46-1.736-1.63-2.03-.171-.293-.018-.451.128-.597.132-.132.293-.342.44-.514.146-.171.195-.293.293-.488.098-.196.049-.367-.024-.514-.073-.147-.658-1.587-.902-2.174-.238-.57-.48-.493-.658-.502l-.56-.01c-.196 0-.514.073-.783.367-.268.293-1.026 1.003-1.026 2.443s1.051 2.833 1.197 3.03c.147.195 2.07 3.16 5.017 4.432.701.302 1.248.483 1.675.618.704.224 1.344.192 1.85.117.564-.084 1.733-.708 1.977-1.392.244-.684.244-1.27.171-1.392-.073-.122-.268-.196-.561-.343z"/></svg>
+      WhatsApp पर भेजें
+    </button>
+
+    <button class="share-btn telegram-btn" id="telegramBtn">
+      <svg class="icon" viewBox="0 0 24 24" fill="white"><path d="M21.5 4.5L2.7 11.9c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.9.9.9.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.8L23 6.1c.3-1.2-.4-1.8-1.5-1.6z"/></svg>
+      Telegram पर भेजें
+    </button>
+  </div>
+
+  <!-- ===== RECEIVER VIEW: jab kisi ne link bheja ===== -->
+  <div id="receiverView" class="hidden">
+    <p class="subMsg" id="receiverMsg">उन्होंने आपके लिए यह खास शुभकामना भेजी है 🎁</p>
+    <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Link copy ho gaya!</div>
+
+<script>
+/* ============ SETTINGS — यहाँ बदलें ============ */
+const IMAGE_FILENAME = "background.jpg";
+const OCCASION_TITLE = "शुभ दीपावली!";
+const BRAND_TEXT = "AiTricker की ओर से";
+/* ================================================ */
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const loadingDiv = document.getElementById('loadingDiv');
+
+let bgImage = null;
+
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(bgImage){
+    const scale = Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
+    const w = bgImage.width * scale;
+    const h = bgImage.height * scale;
+    const x = (canvas.width - w) / 2;
+    const y = (canvas.height - h) / 2;
+    ctx.drawImage(bgImage, x, y, w, h);
+  } else {
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#ffd700";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("background.jpg daalein", canvas.width/2, canvas.height/2);
+  }
+}
+
+const img = new Image();
+img.onload = function(){ bgImage = img; loadingDiv.style.display = 'none'; render(); };
+img.onerror = function(){ bgImage = null; loadingDiv.textContent = "background.jpg nahi mili"; render(); };
+img.src = IMAGE_FILENAME;
+
+/* ============ URL check: kya koi naam bhej ke aaya hai? ============ */
+const params = new URLSearchParams(window.location.search);
+const senderName = params.get('naam') || params.get('name');
+
+const titleEl = document.getElementById('titleText');
+const brandEl = document.getElementById('brandText');
+const senderView = document.getElementById('senderView');
+const receiverView = document.getElementById('receiverView');
+
+if(senderName){
+  // RECEIVER VIEW — kisi ne link bheja hai
+  titleEl.innerHTML = `<span class="sender-name">${escapeHtml(senderName)}</span> की ओर से<br>हार्दिक शुभकामनाएं!`;
+  brandEl.textContent = OCCASION_TITLE;
+  senderView.classList.add('hidden');
+  receiverView.classList.remove('hidden');
+  document.getElementById('pageTitle').textContent = `${senderName} की ओर से शुभकामनाएं 🎁`;
+  document.getElementById('ogTitle').setAttribute('content', `${senderName} की ओर से हार्दिक शुभकामनाएं! 🎁`);
+  document.getElementById('ogDesc').setAttribute('content', `${senderName} ने आपके लिए कुछ खास भेजा है। देखने के लिए क्लिक करें।`);
+} else {
+  // SENDER VIEW — naya link banayenge
+  titleEl.textContent = OCCASION_TITLE;
+  brandEl.textContent = BRAND_TEXT;
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById('createOwnBtn').addEventListener('click', function(){
+  window.location.href = window.location.pathname;
+});
+
+function buildShareLink(name){
+  const base = window.location.origin + window.location.pathname;
+  return `${base}?naam=${encodeURIComponent(name)}`;
+}
+
+function buildShareMessage(name){
+  const link = buildShareLink(name);
+  return `🎉 *${name}* की ओर से हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
+}
+
+document.getElementById('shareBtn').addEventListener('click', function(){
+  const name = document.getElementById('nameInput').value.trim();
+  if(!name){
+    document.getElementById('nameInput').focus();
+    return;
+  }
+  const message = buildShareMessage(name);
+  const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  window.open(waLink, '_blank');
+});
+
+document.getElementById('telegramBtn').addEventListener('click', function(){
+  const name = document.getElementById('nameInput').value.trim();
+  if(!name){
+    document.getElementById('nameInput').focus();
+    return;
+  }
+  const link = buildShareLink(name);
+  const text = `🎉 ${name} की ओर से हार्दिक शुभकामनाएं! उन्होंने आपके लिए कुछ खास भेजा है।`;
+  const tgLink = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+  window.open(tgLink, '_blank');
+});
+
+render();
+
+/* ============ SPARKLE BACKGROUND ============ */
+const sparkleCanvas = document.getElementById('sparkleCanvas');
+const sctx = sparkleCanvas.getContext('2d');
+let particles = [];
+
+function resizeSparkle(){
+  sparkleCanvas.width = window.innerWidth;
+  sparkleCanvas.height = window.innerHeight;
+}
+resizeSparkle();
+window.addEventListener('resize', resizeSparkle);
+
+function createParticle(){
+  return {
+    x: Math.random() * sparkleCanvas.width,
+    y: sparkleCanvas.height + 10,
+    r: Math.random() * 2 + 1,
+    speed: Math.random() * 0.8 + 0.3,
+    drift: (Math.random() - 0.5) * 0.5,
+    opacity: Math.random() * 0.6 + 0.3,
+    twinkleSpeed: Math.random() * 0.05 + 0.02
+  };
+}
+for(let i=0; i<60; i++){
+  const p = createParticle();
+  p.y = Math.random() * sparkleCanvas.height;
+  particles.push(p);
+}
+
+function animateSparkles(){
+  sctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+  particles.forEach(p => {
+    p.y -= p.speed;
+    p.x += p.drift;
+    p.opacity += (Math.random() - 0.5) * p.twinkleSpeed;
+    p.opacity = Math.max(0.1, Math.min(0.9, p.opacity));
+    if(p.y < -10){
+      Object.assign(p, createParticle());
+      p.y = sparkleCanvas.height + 10;
+    }
+    sctx.beginPath();
+    sctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    sctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
+    sctx.shadowBlur = 6;
+    sctx.shadowColor = 'rgba(255,215,0,0.8)';
+    sctx.fill();
+  });
+  requestAnimationFrame(animateSparkles);
+}
+animateSparkles();
+</script>
+
+</body>
+</html>
