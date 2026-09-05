@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title id="pageTitle">Happy Teacher's Day - अपना नाम लिखें</title>
+<title id="pageTitle">Shubhkamnaye - अपना नाम लिखें</title>
 
-<meta property="og:title" content="Happy Teacher's Day 🪔" id="ogTitle" />
+<meta property="og:title" content="Shubhkamnaye 🪔" id="ogTitle" />
 <meta property="og:description" content="Aapke liye kisi ne shubhkamnaye bheji hain!" id="ogDesc" />
 <meta property="og:image" content="background.jpg" />
 <meta property="og:type" content="website" />
@@ -36,15 +36,19 @@
     position:relative;
     z-index:1;
   }
+  /* aspect-ratio ab JS se dynamically set hogi, jaisi hi image load hogi */
   .canvas-wrap{
     width:100%;
-    aspect-ratio:4/3;
+    max-height:70vh;
     border-radius:16px;
     overflow:hidden;
     margin-bottom:22px;
     box-shadow:0 0 0 3px #ffd700, 0 0 30px rgba(255,215,0,0.5);
     position:relative;
     background:#111;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   canvas.mainCanvas{ width:100%; height:100%; display:block; }
   .loading{
@@ -156,13 +160,13 @@
 
 <div class="container">
 
-  <div class="canvas-wrap">
+  <div class="canvas-wrap" id="canvasWrap">
     <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
     <div class="loading" id="loadingDiv">Photo load ho rahi hai...</div>
   </div>
 
-  <h1 class="title" id="titleText">Happy Teacher's Day</h1>
-  <p class="brand" id="brandText">BG की ओर से</p>
+  <h1 class="title" id="titleText">Shubhkamnaye</h1>
+  <p class="brand" id="brandText">की ओर से</p>
 
   <!-- ===== SENDER VIEW: naam likh kar link banaye ===== -->
   <div id="senderView">
@@ -192,14 +196,24 @@
 <div class="toast" id="toast">Link copy ho gaya!</div>
 
 <script>
-/* ============ SETTINGS — यहाँ बदलें ============ */
-const IMAGE_FILENAME = "background.jpg";
-const OCCASION_TITLE = "Happy Teacher's Day";
-const BRAND_TEXT = "BG की ओर से";
-/* ================================================ */
+/* ================================================================
+   SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
+   ================================================================ */
+const IMAGE_FILENAME = "background.jpg";   // अपनी फोटो का नाम
+const OCCASION_NAME  = "Happy Teacher's Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
+const BRAND_TEXT     = "Bhavesh";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
+/* ================================================================ */
+
+// इन सबको ऊपर वाले 3 वेरिएबल से ऑटोमेटिक बना दिया जाता है — यहाँ कुछ बदलने की ज़रूरत नहीं
+const HEADING_TEMPLATE = (name) => `<span class="sender-name">${name}</span> की ओर से<br>${OCCASION_NAME} की हार्दिक शुभकामनाएं!`;
+const SHARE_MESSAGE_TEMPLATE = (name, link) =>
+  `🎉 *${name}* की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
+const TELEGRAM_TEXT_TEMPLATE = (name) =>
+  `🎉 ${name} की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं! उन्होंने आपके लिए कुछ खास भेजा है।`;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const canvasWrap = document.getElementById('canvasWrap');
 const loadingDiv = document.getElementById('loadingDiv');
 
 let bgImage = null;
@@ -207,12 +221,8 @@ let bgImage = null;
 function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   if(bgImage){
-    const scale = Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
-    const w = bgImage.width * scale;
-    const h = bgImage.height * scale;
-    const x = (canvas.width - w) / 2;
-    const y = (canvas.height - h) / 2;
-    ctx.drawImage(bgImage, x, y, w, h);
+    // Image poori dikhegi, bina crop/zoom ke — jo bhi photo ka shape ho
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
   } else {
     ctx.fillStyle = "#111";
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -224,8 +234,20 @@ function render(){
 }
 
 const img = new Image();
-img.onload = function(){ bgImage = img; loadingDiv.style.display = 'none'; render(); };
-img.onerror = function(){ bgImage = null; loadingDiv.textContent = "background.jpg nahi mili"; render(); };
+img.onload = function(){
+  bgImage = img;
+  // Canvas ka size aur box ka shape, image ke asli aspect ratio ke hisaab se set karo
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  canvasWrap.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+  loadingDiv.style.display = 'none';
+  render();
+};
+img.onerror = function(){
+  bgImage = null;
+  loadingDiv.textContent = "background.jpg nahi mili";
+  render();
+};
 img.src = IMAGE_FILENAME;
 
 /* ============ URL check: kya koi naam bhej ke aaya hai? ============ */
@@ -239,17 +261,17 @@ const receiverView = document.getElementById('receiverView');
 
 if(senderName){
   // RECEIVER VIEW — kisi ne link bheja hai
-  titleEl.innerHTML = `<span class="sender-name">${escapeHtml(senderName)}</span> की ओर से<br>हार्दिक शुभकामनाएं!`;
-  brandEl.textContent = OCCASION_TITLE;
+  titleEl.innerHTML = HEADING_TEMPLATE(escapeHtml(senderName));
+  brandEl.textContent = BRAND_TEXT;
   senderView.classList.add('hidden');
   receiverView.classList.remove('hidden');
   document.getElementById('pageTitle').textContent = `${senderName} की ओर से शुभकामनाएं 🎁`;
-  document.getElementById('ogTitle').setAttribute('content', `${senderName} की ओर से हार्दिक शुभकामनाएं! 🎁`);
+  document.getElementById('ogTitle').setAttribute('content', `${senderName} की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं! 🎁`);
   document.getElementById('ogDesc').setAttribute('content', `${senderName} ने आपके लिए कुछ खास भेजा है। देखने के लिए क्लिक करें।`);
 } else {
   // SENDER VIEW — naya link banayenge
-  titleEl.textContent = OCCASION_TITLE;
-  brandEl.textContent = BRAND_TEXT;
+  titleEl.textContent = OCCASION_NAME + " की शुभकामनाएं";
+  brandEl.textContent = BRAND_TEXT + " की ओर से";
 }
 
 function escapeHtml(str){
@@ -267,18 +289,14 @@ function buildShareLink(name){
   return `${base}?naam=${encodeURIComponent(name)}`;
 }
 
-function buildShareMessage(name){
-  const link = buildShareLink(name);
-  return `🎉 *${name}* की ओर से हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
-}
-
 document.getElementById('shareBtn').addEventListener('click', function(){
   const name = document.getElementById('nameInput').value.trim();
   if(!name){
     document.getElementById('nameInput').focus();
     return;
   }
-  const message = buildShareMessage(name);
+  const link = buildShareLink(name);
+  const message = SHARE_MESSAGE_TEMPLATE(name, link);
   const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
   window.open(waLink, '_blank');
 });
@@ -290,7 +308,7 @@ document.getElementById('telegramBtn').addEventListener('click', function(){
     return;
   }
   const link = buildShareLink(name);
-  const text = `🎉 ${name} की ओर से हार्दिक शुभकामनाएं! उन्होंने आपके लिए कुछ खास भेजा है।`;
+  const text = TELEGRAM_TEXT_TEMPLATE(name);
   const tgLink = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
   window.open(tgLink, '_blank');
 });
