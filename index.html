@@ -154,36 +154,47 @@
      AD SLOTS — यहाँ अपने Ad Network (AdSense/Adsterra/Monetag) का <script> या
      <ins>/<iframe> कोड पेस्ट करना है। जब तक कुछ पेस्ट नहीं करोगे, ये जगह
      अपने आप छुप जाएगी (नीचे JS में) — कोई खाली बॉक्स नहीं दिखेगा।
+
+     कुल 6 AD SLOTS हैं:
+       - 1 ऊपर (top)          -> 300x250
+       - 1 नीचे (bottom)      -> 300x250
+       - 4 साइड (side)        -> 300x250 (हर तरफ 2-2, सिर्फ बड़ी स्क्रीन/लैपटॉप पर दिखेंगे,
+                                  मोबाइल पर हाइड रहेंगे ताकि मोबाइल तेज़ खुले)
      ============================================================================ */
-  .<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/300x250_adsterra_reff.gif" /></a>
-  /* ऊपर वाला स्लॉट — यहाँ लगाओ: GIF 300x250 (सबसे बेस्ट) / 250x250 / 200x200 / 160x90 */
+  .ad-slot{
+    max-width:100%;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+    z-index:1;
+  }
+  /* ऊपर वाला स्लॉट — यहाँ लगाओ: 300x250 */
   .ad-slot-top{
     width:300px;
     height:250px;
   }
-  /* नीचे वाला बड़ा स्लॉट — यहाँ लगाओ: GIF 300x425 / 300x250 */
+  /* नीचे वाला स्लॉट — यहाँ लगाओ: 300x250 */
   .ad-slot-bottom{
     width:300px;
-    height:425px;
+    height:250px;
   }
-  /* नीचे वाला छोटा स्लॉट — यहाँ लगाओ: GIF 120x150 */
-  .ad-slot-small{
-    width:120px;
-    height:150px;
-  }
-  /* साइड स्काईस्क्रेपर — सिर्फ बड़ी स्क्रीन (लैपटॉप/डेस्कटॉप) पर दिखेगा
-     यहाँ लगाओ: GIF 160x600 (बेस्ट) / 120x600 / 120x300 */
+  /* साइड वाले 4 स्लॉट (हर तरफ 2-2) — सिर्फ बड़ी स्क्रीन (लैपटॉप/डेस्कटॉप) पर दिखेंगे
+     यहाँ लगाओ: हर एक में 300x250 */
   .ad-slot-side{
-    width:160px;
-    height:600px;
+    width:300px;
+    height:250px;
     position:fixed;
-    top:50%;
-    transform:translateY(-50%);
-    display:none; /* mobile par hidden — neeche media query mein show hoga */
+    display:none; /* mobile par hidden — neeche media query mein show hoga, mobile fast rahega */
+    margin:0;
   }
   .ad-slot-side-left{ left:12px; }
   .ad-slot-side-right{ right:12px; }
-  @media (min-width: 900px){
+  .ad-slot-side-top{ top:calc(50% - 270px); }
+  .ad-slot-side-bottom{ top:calc(50% + 20px); }
+  @media (min-width: 1100px){
     .ad-slot-side{ display:flex; }
   }
   /* JS isme ad code detect na hone par 'ad-slot-empty' class laga dega — tab poori jagah gayab ho jayegi */
@@ -207,19 +218,25 @@
 
 <canvas id="sparkleCanvas"></canvas>
 
-<!-- ===== साइड स्काईस्क्रेपर AD (सिर्फ बड़ी स्क्रीन पर दिखेंगे) ===== -->
-<!-- यहाँ लगाओ: GIF 160x600 / 120x600 / 120x300 -->
-<div class="ad-slot ad-slot-side ad-slot-side-left" id="adSlotSideLeft">
-  <!-- यहाँ बाईं तरफ का Ad Code पेस्ट करो -->
+<!-- ===== साइड के 4 AD (सिर्फ बड़ी स्क्रीन पर दिखेंगे, मोबाइल पर नहीं — मोबाइल तेज़ खुलेगा) ===== -->
+<!-- हर एक में लगाओ: 300x250 -->
+<div class="ad-slot ad-slot-side ad-slot-side-left ad-slot-side-top" id="adSlotSideLeftTop">
+  <!-- यहाँ बाईं तरफ ऊपर का Ad Code पेस्ट करो -->
 </div>
-<div class="ad-slot ad-slot-side ad-slot-side-right" id="adSlotSideRight">
-  <!-- यहाँ दाईं तरफ का Ad Code पेस्ट करो -->
+<div class="ad-slot ad-slot-side ad-slot-side-left ad-slot-side-bottom" id="adSlotSideLeftBottom">
+  <!-- यहाँ बाईं तरफ नीचे का Ad Code पेस्ट करो -->
+</div>
+<div class="ad-slot ad-slot-side ad-slot-side-right ad-slot-side-top" id="adSlotSideRightTop">
+  <!-- यहाँ दाईं तरफ ऊपर का Ad Code पेस्ट करो -->
+</div>
+<div class="ad-slot ad-slot-side ad-slot-side-right ad-slot-side-bottom" id="adSlotSideRightBottom">
+  <!-- यहाँ दाईं तरफ नीचे का Ad Code पेस्ट करो -->
 </div>
 
 <div class="container">
 
   <!-- ===== ऊपर वाला AD (फोटो के ऊपर) ===== -->
-  <!-- यहाँ लगाओ: GIF 300x250 (बेस्ट) / 250x250 / 200x200 / 160x90 -->
+  <!-- यहाँ लगाओ: 300x250 -->
   <div class="ad-slot ad-slot-top" id="adSlotTop">
     <!-- यहाँ अपना Ad Code (script/ins/iframe) पेस्ट करो -->
   </div>
@@ -255,15 +272,9 @@
     <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
   </div>
 
-  <!-- ===== नीचे वाला बड़ा AD ===== -->
-  <!-- यहाँ लगाओ: GIF 300x425 / 300x250 -->
+  <!-- ===== नीचे वाला AD ===== -->
+  <!-- यहाँ लगाओ: 300x250 -->
   <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
-    <!-- यहाँ अपना Ad Code पेस्ट करो -->
-  </div>
-
-  <!-- ===== नीचे वाला छोटा AD ===== -->
-  <!-- यहाँ लगाओ: GIF 120x150 -->
-  <div class="ad-slot ad-slot-small" id="adSlotSmall">
     <!-- यहाँ अपना Ad Code पेस्ट करो -->
   </div>
 
@@ -276,8 +287,8 @@
    SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
    ================================================================ */
 const IMAGE_FILENAME = "background.jpg";   // अपनी फोटो का नाम
-const OCCASION_NAME  = "Teachers Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
-const BRAND_TEXT     = "Bhavesh";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
+const OCCASION_NAME  = "जन्मदिन";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
+const BRAND_TEXT     = "AiTricker";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
 /* ================================================================ */
 
 // इन सबको ऊपर वाले 3 वेरिएबल से ऑटोमेटिक बना दिया जाता है — यहाँ कुछ बदलने की ज़रूरत नहीं
@@ -404,16 +415,7 @@ render();
    AD SLOT AUTO-HIDE — अगर किसी slot में कोई ad code नहीं डाला गया है (यानी
    div खाली है), तो वो जगह अपने आप गायब हो जाएगी। कोई खाली/टूटा बॉक्स नहीं दिखेगा।
    ============================================================================ */
-function hideEmptyAdSlots(){
-  document.querySelectorAll('.ad-slot').forEach(function(slot){
-    const hasContent = slot.innerHTML.trim().length > 0;
-    if(!hasContent){
-      slot.classList.add('ad-slot-empty');
-    } else {
-      slot.classList.remove('ad-slot-empty');
-    }
-  });
-}
+<a href="" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/700x90_adsterra_reff.gif" /></a>
 // Page load hote hi check karo
 hideEmptyAdSlots();
 // Kuch ad networks apna code thodi der baad (async) inject karte hain, isliye 2 second baad dobara check
