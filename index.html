@@ -298,7 +298,7 @@ function render(){
     ctx.fillStyle = "#ffd700";
     ctx.font = "24px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("background.jpg daalein", canvas.width/2, canvas.height/2);
+    ctx.fillText("background.gif daalein", canvas.width/2, canvas.height/2);
   }
 }
 
@@ -323,7 +323,7 @@ img.onload = function(){
 };
 img.onerror = function(){
   bgImage = null;
-  loadingDiv.textContent = "background.jpg nahi mili";
+  loadingDiv.textContent = "background.gif nahi mili";
   render();
 };
 img.src = IMAGE_FILENAME;
