@@ -309,13 +309,15 @@ document.getElementById('shareBtn').addEventListener('click', async function(){
     }
   }
 
-  // Fallback (desktop / jahan Web Share API support nahi hai): WhatsApp Web khol do
+  // Fallback (desktop / jahan Web Share API support nahi hai, ya http/file par test ho raha hai):
+  // WhatsApp turant kholo (isi click ke andar, bina kisi await ke) — warna mobile browser
+  // ise popup samajh kar block kar deta hai.
+  const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  window.open(waLink, '_blank');
   try{
     await navigator.clipboard.writeText(message);
     showToast('Link copy ho gaya!');
   }catch(e){ /* clipboard fail ho to bhi WhatsApp khulega */ }
-  const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
-  window.open(waLink, '_blank');
 });
 
 render();
