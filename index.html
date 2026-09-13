@@ -202,6 +202,11 @@ const BRAND_TEXT     = "AiMaster";         // अपना ब्रांड/�
 const HEADING_TEMPLATE = (name) => `<span class="sender-name">${name}</span> की ओर से<br>${OCCASION_NAME} की हार्दिक शुभकामनाएं!`;
 const SHARE_MESSAGE_TEMPLATE = (name, link) =>
   `🎉 *${name}* की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
+// navigator.share() ke liye link-rahit text — kyunki share ka "url" field alag se
+// pass hota hai, agar text ke andar bhi link daal denge to WhatsApp jaise apps
+// link do baar dikhane lagte hain
+const SHARE_TEXT_ONLY_TEMPLATE = (name) =>
+  `🎉 *${name}* की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇`;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -298,10 +303,11 @@ document.getElementById('shareBtn').addEventListener('click', async function(){
   }
   const link = buildShareLink(name);
   const message = SHARE_MESSAGE_TEMPLATE(name, link);
+  const textOnly = SHARE_TEXT_ONLY_TEMPLATE(name);
 
   if(navigator.share){
     try{
-      await navigator.share({ title: document.title, text: message, url: link });
+      await navigator.share({ title: document.title, text: textOnly, url: link });
       return;
     }catch(err){
       // user ne share cancel kiya ya error aaya — fallback niche chalega
