@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#2b0a0a" />
+<meta name="theme-color" content="#1a0505" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -17,15 +17,25 @@
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{ touch-action:manipulation; }
   body{
-    font-family:'Segoe UI', Arial, sans-serif;
-    background:linear-gradient(180deg, #2b0a0a 0%, #4a0e0e 50%, #2b0a0a 100%);
+    font-family:'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background: radial-gradient(ellipse at top, #4a0e0e 0%, #2b0a0a 40%, #1a0505 100%);
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:flex-start;
-    padding:24px 16px 60px;
+    padding:20px 14px 50px;
     position:relative;
     overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,215,0,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255,100,50,0.06) 0%, transparent 40%);
+    pointer-events:none;
+    z-index:0;
   }
   #sparkleCanvas{
     position:fixed; top:0; left:0;
@@ -35,108 +45,183 @@
   }
   .container{
     width:100%;
-    max-width:420px;
+    max-width:400px;
     text-align:center;
     position:relative;
     z-index:1;
   }
-  /* aspect-ratio ab JS se dynamically set hogi, jaisi hi image load hogi */
+  .glass-card{
+    background: rgba(30, 10, 10, 0.55);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.45),
+      inset 0 1px 0 rgba(255,215,0,0.12);
+    padding: 18px 16px 22px;
+    margin-bottom: 18px;
+  }
   .canvas-wrap{
     width:100%;
-    max-height:70vh;
-    border-radius:16px;
+    max-height:62vh;
+    border-radius:18px;
     overflow:hidden;
-    margin-bottom:22px;
-    box-shadow:0 0 0 3px #ffd700, 0 0 30px rgba(255,215,0,0.5);
+    margin-bottom:18px;
     position:relative;
-    background:#111;
+    background:#0d0505;
     display:flex;
     align-items:center;
     justify-content:center;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow:
+      0 0 0 2px rgba(255,215,0,0.35),
+      0 0 24px rgba(255,215,0,0.25),
+      0 0 48px rgba(255,100,0,0.12);
+    animation: borderGlow 3s ease-in-out infinite alternate;
   }
-  canvas.mainCanvas{ width:100%; height:100%; display:block; }
+  @keyframes borderGlow{
+    0%{
+      box-shadow:
+        0 0 0 2px rgba(255,215,0,0.35),
+        0 0 18px rgba(255,215,0,0.2),
+        0 0 36px rgba(255,100,0,0.08);
+    }
+    100%{
+      box-shadow:
+        0 0 0 2px rgba(255,230,100,0.7),
+        0 0 32px rgba(255,215,0,0.45),
+        0 0 60px rgba(255,140,0,0.2);
+    }
+  }
+  canvas.mainCanvas{ width:100%; height:100%; display:block; border-radius:16px; }
   .loading{
     position:absolute; top:0; left:0; right:0; bottom:0;
-    display:flex; align-items:center; justify-content:center;
-    background:#111; color:#ffd700; font-size:14px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:14px;
+    background: linear-gradient(160deg, #1a0808 0%, #2b0a0a 100%);
+    color:#ffd700;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    border-radius:16px;
   }
+  .loading-spinner{
+    width:42px; height:42px;
+    border:3px solid rgba(255,215,0,0.2);
+    border-top-color:#ffd700;
+    border-radius:50%;
+    animation: spin 0.85s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
   h1.title{
     color:#ffd700;
-    font-size:28px;
+    font-size:clamp(22px, 6.5vw, 28px);
     font-weight:800;
     margin-bottom:6px;
-    line-height:1.3;
-    text-shadow:0 0 15px rgba(255,215,0,0.7), 0 2px 10px rgba(0,0,0,0.5);
-    animation: glow 2s ease-in-out infinite alternate;
+    line-height:1.35;
+    text-shadow:
+      0 0 20px rgba(255,215,0,0.55),
+      0 2px 8px rgba(0,0,0,0.6);
+    animation: titleGlow 2.4s ease-in-out infinite alternate;
   }
   h1.title .sender-name{
     color:#fff;
+    text-shadow: 0 0 12px rgba(255,255,255,0.35);
   }
-  @keyframes glow{
-    from{ text-shadow:0 0 10px rgba(255,215,0,0.5); }
-    to{ text-shadow:0 0 25px rgba(255,215,0,0.9); }
+  @keyframes titleGlow{
+    from{ text-shadow: 0 0 12px rgba(255,215,0,0.4), 0 2px 8px rgba(0,0,0,0.5); }
+    to{ text-shadow: 0 0 28px rgba(255,215,0,0.85), 0 2px 10px rgba(0,0,0,0.5); }
   }
   p.brand{
-    color:#f5f5f5;
-    font-size:15px;
+    color:#f5e6c8;
+    font-size:14px;
     font-weight:600;
-    margin-bottom:20px;
-    opacity:0.9;
+    margin-bottom:14px;
+    opacity:0.92;
+    letter-spacing:0.4px;
   }
   p.subMsg{
-    color:#f0e6d2;
-    font-size:14px;
-    margin-bottom:24px;
-    opacity:0.85;
+    color:#e8d9b8;
+    font-size:13.5px;
+    margin-bottom:18px;
+    opacity:0.9;
+    line-height:1.45;
   }
   label.field-label{
     display:block;
-    color:#f0f0f0;
-    font-size:15px;
-    margin-bottom:10px;
+    color:#f0e6d2;
+    font-size:14px;
+    margin-bottom:8px;
+    font-weight:500;
   }
   input[type="text"]{
     width:100%;
-    padding:16px 18px;
-    border-radius:12px;
-    border:2px solid transparent;
+    padding:15px 16px;
+    border-radius:14px;
+    border:1.5px solid rgba(255,215,0,0.35);
     font-size:16px;
-    background:#fdf6e3;
-    color:#333;
-    margin-bottom:20px;
+    background: rgba(253,246,227,0.95);
+    color:#2b0a0a;
+    margin-bottom:16px;
     text-align:center;
     outline:none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   }
-  input[type="text"]:focus{ border-color:#ffd700; }
+  input[type="text"]:focus{
+    border-color:#ffd700;
+    box-shadow: 0 0 0 3px rgba(255,215,0,0.25), 0 4px 14px rgba(0,0,0,0.2);
+  }
+  input[type="text"]::placeholder{ color:#8a7a5a; }
   button.share-btn{
     width:100%;
-    padding:18px;
+    padding:16px 18px;
     border:none;
-    border-radius:14px;
-    font-size:17px;
+    border-radius:16px;
+    font-size:16.5px;
     font-weight:700;
-    color:#fff;
-    background:#25D366;
+    color:#1a0505;
+    background: linear-gradient(135deg, #ffd700 0%, #ffb700 40%, #ff9500 100%);
     cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
-    box-shadow:0 6px 18px rgba(37,211,102,0.4);
-    margin-bottom:12px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:
+      0 6px 20px rgba(255,180,0,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.35);
+    transition: transform 0.2s, box-shadow 0.25s;
   }
-  button.share-btn:active{ transform:scale(0.98); }
-  .icon{ width:22px; height:22px; }
-  /* ============================================================================
-     AD SLOTS — यहाँ अपने Ad Network का <script>/<ins>/<iframe> कोड पेस्ट करना है।
-     जब तक कुछ पेस्ट नहीं करोगे, ये जगह अपने आप छुप जाएगी (नीचे JS में)।
-     कुल 2 AD SLOTS हैं (मोबाइल पर भी दिखेंगे):
-       - 1 ऊपर (top)     -> 300x250
-       - 1 नीचे (bottom) -> 300x250
-     ============================================================================ */
+  button.share-btn::before{
+    content:'';
+    position:absolute;
+    top:0; left:-100%;
+    width:60%; height:100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+    transition: left 0.55s ease;
+  }
+  button.share-btn:hover::before,
+  button.share-btn:active::before{
+    left:120%;
+  }
+  button.share-btn:active{
+    transform: scale(0.97);
+    box-shadow: 0 3px 12px rgba(255,180,0,0.35);
+  }
+  button.share-btn:hover{
+    box-shadow:
+      0 8px 28px rgba(255,180,0,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .icon{ width:22px; height:22px; flex-shrink:0; }
   .ad-slot{
     max-width:100%;
-    margin:0 auto 20px;
+    margin:0 auto 16px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -144,36 +229,39 @@
     position:relative;
     z-index:1;
   }
-  /* ऊपर वाला स्लॉट — यहाँ लगाओ: 300x250 */
-  .ad-slot-top{
-    width:300px;
-    height:250px;
-  }
-  /* नीचे वाला स्लॉट — यहाँ लगाओ: 300x250 */
-  .ad-slot-bottom{
-    width:300px;
-    height:250px;
-  }
-  /* JS isme ad code detect na hone par 'ad-slot-empty' class laga dega — tab poori jagah gayab ho jayegi */
-  .ad-slot-empty{
-    display:none !important;
-  }
-  /* ============================================================================ */
+  .ad-slot-top{ width:300px; height:250px; }
+  .ad-slot-bottom{ width:300px; height:250px; }
+  .ad-slot-empty{ display:none !important; }
   .toast{
-    position:fixed; bottom:24px; left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:#222; color:#fff;
-    padding:12px 20px; border-radius:10px;
-    font-size:14px; opacity:0; transition:all 0.3s; z-index:10;
+    position:fixed; bottom:28px; left:50%;
+    transform:translateX(-50%) translateY(120px);
+    background: rgba(20,8,8,0.95);
+    color:#ffd700;
+    padding:13px 22px;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:600;
+    border:1px solid rgba(255,215,0,0.3);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    opacity:0;
+    transition: all 0.35s cubic-bezier(0.34,1.2,0.64,1);
+    z-index:20;
   }
-  .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+  .toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+  }
   .hidden{ display:none !important; }
+  @media (max-width:420px){
+    body{ padding:16px 12px 40px; }
+    .glass-card{ padding:14px 12px 18px; border-radius:20px; }
+    h1.title{ font-size:24px; }
+  }
 </style>
 </head>
 <body>
 <canvas id="sparkleCanvas"></canvas>
 <div class="container">
-  <!-- ===== ऊपर वाला AD (फोटो के ऊपर) — 300x250 ===== -->
   <div class="ad-slot ad-slot-top" id="adSlotTop">
     <script>
       atOptions = {
@@ -186,25 +274,29 @@
     </script>
     <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
   </div>
-  <div class="canvas-wrap" id="canvasWrap">
-    <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
-    <div class="loading" id="loadingDiv">Photo load ho rahi hai...</div>
-  </div>
-  <h1 class="title" id="titleText">Shubhkamnaye</h1>
-  <p class="brand" id="brandText">की ओर से</p>
 
-  <!-- ===== NAME + SHARE (hamesha dikhega — sender aur receiver dono pe) ===== -->
-  <div id="shareSection">
-    <p class="subMsg" id="subMsgText">Apna naam likho aur link banao — jise bhi bhejoge, usme tumhara naam dikhega!</p>
-    <label class="field-label">आपका नाम:</label>
-    <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें" maxlength="30" />
-    <button class="share-btn" id="shareBtn">
-      <svg class="icon" viewBox="0 0 24 24" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
-      Share करें
-    </button>
+  <div class="glass-card">
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
+      <div class="loading" id="loadingDiv">
+        <div class="loading-spinner"></div>
+        <span>Photo load ho rahi hai...</span>
+      </div>
+    </div>
+    <h1 class="title" id="titleText">Shubhkamnaye</h1>
+    <p class="brand" id="brandText">की ओर से</p>
+
+    <div id="shareSection">
+      <p class="subMsg" id="subMsgText">Apna naam likho aur link banao — jise bhi bhejoge, usme tumhara naam dikhega!</p>
+      <label class="field-label">आपका नाम:</label>
+      <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें" maxlength="30" />
+      <button class="share-btn" id="shareBtn">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+        Share करें
+      </button>
+    </div>
   </div>
 
-  <!-- ===== नीचे वाला AD — 300x250 ===== -->
   <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
     <script>
       atOptions = {
@@ -220,14 +312,9 @@
 </div>
 <div class="toast" id="toast">Link copy ho gaya!</div>
 <script>
-/* ================================================================
-   SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
-   ================================================================ */
-const IMAGE_FILENAME = "background.gif";   // अपनी फोटो का नाम
-const OCCASION_NAME  = "Teachers Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
-const BRAND_TEXT     = "AiMaster";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
-/* ================================================================ */
-// इन सबको ऊपर वाले 3 वेरिएबल से ऑटोमेटिक बना दिया जाता है — यहाँ कुछ बदलने की ज़रूरत नहीं
+const IMAGE_FILENAME = "background.gif";
+const OCCASION_NAME  = "Teachers Day";
+const BRAND_TEXT     = "AiMaster";
 const HEADING_TEMPLATE = (name) => `<span class="sender-name">${name}</span> की ओर से<br>${OCCASION_NAME} की हार्दिक शुभकामनाएं!`;
 const SHARE_MESSAGE_TEMPLATE = (name, link) =>
   `🎉 *${name}* की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
@@ -239,7 +326,6 @@ let bgImage = null;
 function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   if(bgImage){
-    // Image poori dikhegi, bina crop/zoom ke — jo bhi photo ka shape ho
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
   } else {
     ctx.fillStyle = "#111";
@@ -253,8 +339,6 @@ function render(){
 const img = new Image();
 img.onload = function(){
   bgImage = img;
-  // Bade/heavy photo ka size mobile ke liye kam karo (max 1000px width) —
-  // isse loading aur rendering dono mobile par fast rahenge
   const MAX_DIMENSION = 1000;
   let w = img.naturalWidth;
   let h = img.naturalHeight;
@@ -271,18 +355,17 @@ img.onload = function(){
 };
 img.onerror = function(){
   bgImage = null;
-  loadingDiv.textContent = "background.gif nahi mili";
+  loadingDiv.innerHTML = '<span>background.gif nahi mili</span>';
   render();
 };
 img.src = IMAGE_FILENAME;
-/* ============ URL check: kya koi naam bhej ke aaya hai? ============ */
+
 const params = new URLSearchParams(window.location.search);
 const senderName = params.get('naam') || params.get('name');
 const titleEl = document.getElementById('titleText');
 const brandEl = document.getElementById('brandText');
 const subMsgEl = document.getElementById('subMsgText');
 if(senderName){
-  // RECEIVER VIEW — kisi ne link bheja hai
   titleEl.innerHTML = HEADING_TEMPLATE(escapeHtml(senderName));
   brandEl.textContent = BRAND_TEXT;
   subMsgEl.textContent = "उन्होंने आपके लिए यह खास शुभकामना भेजी है 🎁  Apna naam likh kar aap bhi share kar sakte ho!";
@@ -290,7 +373,6 @@ if(senderName){
   document.getElementById('ogTitle').setAttribute('content', `${senderName} की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं! 🎁`);
   document.getElementById('ogDesc').setAttribute('content', `${senderName} ने आपके लिए कुछ खास भेजा है। देखने के लिए क्लिक करें।`);
 } else {
-  // SENDER VIEW — naya link banayenge
   titleEl.textContent = OCCASION_NAME + " की शुभकामनाएं";
   brandEl.textContent = BRAND_TEXT + " की ओर से";
   subMsgEl.textContent = "Apna naam likho aur link banao — jise bhi bhejoge, usme tumhara naam dikhega!";
@@ -318,8 +400,6 @@ document.getElementById('shareBtn').addEventListener('click', async function(){
   }
   const link = buildShareLink(name);
   const message = SHARE_MESSAGE_TEMPLATE(name, link);
-
-  // Native Share API (mobile + modern PC) — saare apps dikhenge
   if(navigator.share){
     try{
       await navigator.share({
@@ -328,27 +408,17 @@ document.getElementById('shareBtn').addEventListener('click', async function(){
         url: link
       });
       return;
-    }catch(e){
-      // user cancelled or error — fallback below
-    }
+    }catch(e){}
   }
-
-  // Fallback: copy link + open WhatsApp (agar share API nahi hai)
   try{
     await navigator.clipboard.writeText(message);
     showToast("Message copy ho gaya! Ab kisi bhi app mein paste karo");
-  }catch(e){
-    // clipboard fail
-  }
-  // WhatsApp fallback
+  }catch(e){}
   const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
   window.open(waLink, '_blank');
 });
 render();
-/* ============================================================================
-   AD SLOT AUTO-HIDE — अगर किसी slot में कोई ad code नहीं डाला गया है (यानी
-   div खाली है), तो वो जगह अपने आप गायब हो जाएगी। कोई खाली/टूटा बॉक्स नहीं दिखेगा।
-   ============================================================================ */
+
 function hideEmptyAdSlots(){
   document.querySelectorAll('.ad-slot').forEach(function(slot){
     const hasContent = slot.innerHTML.trim().length > 0;
@@ -359,19 +429,15 @@ function hideEmptyAdSlots(){
     }
   });
 }
-// Page load hote hi check karo
 hideEmptyAdSlots();
-// Kuch ad networks apna code thodi der baad (async) inject karte hain, isliye 2 second baad dobara check
 setTimeout(hideEmptyAdSlots, 2000);
-/* ============================================================================ */
-/* ============ SPARKLE BACKGROUND (mobile par halka rakha gaya hai) ============ */
+
 const sparkleCanvas = document.getElementById('sparkleCanvas');
 const sctx = sparkleCanvas.getContext('2d');
 let particles = [];
-// Chhoti screen (mobile) par kam particles aur halka glow — smooth performance ke liye
 const isMobile = window.innerWidth < 700;
-const PARTICLE_COUNT = isMobile ? 25 : 60;
-const SHADOW_BLUR = isMobile ? 0 : 6;
+const PARTICLE_COUNT = isMobile ? 28 : 55;
+const SHADOW_BLUR = isMobile ? 0 : 5;
 function resizeSparkle(){
   sparkleCanvas.width = window.innerWidth;
   sparkleCanvas.height = window.innerHeight;
@@ -382,11 +448,11 @@ function createParticle(){
   return {
     x: Math.random() * sparkleCanvas.width,
     y: sparkleCanvas.height + 10,
-    r: Math.random() * 2 + 1,
-    speed: Math.random() * 0.8 + 0.3,
-    drift: (Math.random() - 0.5) * 0.5,
-    opacity: Math.random() * 0.6 + 0.3,
-    twinkleSpeed: Math.random() * 0.05 + 0.02
+    r: Math.random() * 2.2 + 0.8,
+    speed: Math.random() * 0.7 + 0.25,
+    drift: (Math.random() - 0.5) * 0.45,
+    opacity: Math.random() * 0.55 + 0.25,
+    twinkleSpeed: Math.random() * 0.04 + 0.015
   };
 }
 for(let i=0; i<PARTICLE_COUNT; i++){
@@ -400,7 +466,7 @@ function animateSparkles(){
     p.y -= p.speed;
     p.x += p.drift;
     p.opacity += (Math.random() - 0.5) * p.twinkleSpeed;
-    p.opacity = Math.max(0.1, Math.min(0.9, p.opacity));
+    p.opacity = Math.max(0.12, Math.min(0.85, p.opacity));
     if(p.y < -10){
       Object.assign(p, createParticle());
       p.y = sparkleCanvas.height + 10;
@@ -410,7 +476,7 @@ function animateSparkles(){
     sctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
     if(SHADOW_BLUR > 0){
       sctx.shadowBlur = SHADOW_BLUR;
-      sctx.shadowColor = 'rgba(255,215,0,0.8)';
+      sctx.shadowColor = 'rgba(255,215,0,0.7)';
     }
     sctx.fill();
   });
