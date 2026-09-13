@@ -9,12 +9,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="preload" as="image" href="background.gif" />
 <title id="pageTitle">Shubhkamnaye - अपना नाम लिखें</title>
-
 <meta property="og:title" content="Shubhkamnaye 🪔" id="ogTitle" />
 <meta property="og:description" content="Aapke liye kisi ne shubhkamnaye bheji hain!" id="ogDesc" />
 <meta property="og:image" content="background.gif" />
 <meta property="og:type" content="website" />
-
 <style>
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html{ touch-action:manipulation; }
@@ -110,7 +108,6 @@
     outline:none;
   }
   input[type="text"]:focus{ border-color:#ffd700; }
-
   button.share-btn{
     width:100%;
     padding:18px;
@@ -129,12 +126,10 @@
     margin-bottom:12px;
   }
   button.share-btn:active{ transform:scale(0.98); }
-
   button.telegram-btn{
     background:#229ED9;
     box-shadow:0 6px 18px rgba(34,158,217,0.4);
   }
-
   button.create-own-btn{
     width:100%;
     padding:16px;
@@ -147,13 +142,10 @@
     cursor:pointer;
     margin-top:8px;
   }
-
   .icon{ width:22px; height:22px; }
-
   /* ============================================================================
      AD SLOTS — यहाँ अपने Ad Network का <script>/<ins>/<iframe> कोड पेस्ट करना है।
      जब तक कुछ पेस्ट नहीं करोगे, ये जगह अपने आप छुप जाएगी (नीचे JS में)।
-
      कुल 2 AD SLOTS हैं (मोबाइल पर भी दिखेंगे):
        - 1 ऊपर (top)     -> 300x250
        - 1 नीचे (bottom) -> 300x250
@@ -183,7 +175,6 @@
     display:none !important;
   }
   /* ============================================================================ */
-
   .toast{
     position:fixed; bottom:24px; left:50%;
     transform:translateX(-50%) translateY(100px);
@@ -196,11 +187,8 @@
 </style>
 </head>
 <body>
-
 <canvas id="sparkleCanvas"></canvas>
-
 <div class="container">
-
   <!-- ===== ऊपर वाला AD (फोटो के ऊपर) — 300x250 ===== -->
   <div class="ad-slot ad-slot-top" id="adSlotTop">
     <script>
@@ -214,38 +202,30 @@
     </script>
     <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
   </div>
-
   <div class="canvas-wrap" id="canvasWrap">
     <canvas class="mainCanvas" id="canvas" width="800" height="600"></canvas>
     <div class="loading" id="loadingDiv">Photo load ho rahi hai...</div>
   </div>
-
   <h1 class="title" id="titleText">Shubhkamnaye</h1>
   <p class="brand" id="brandText">की ओर से</p>
-
   <!-- ===== SENDER VIEW: naam likh kar link banaye ===== -->
   <div id="senderView">
     <p class="subMsg">Apna naam likho aur link banao — jise bhi bhejoge, usme tumhara naam dikhega!</p>
     <label class="field-label">आपका नाम:</label>
     <input type="text" id="nameInput" placeholder="यहाँ अपना नाम लिखें" maxlength="30" />
-
     <button class="share-btn" id="shareBtn">
       <svg class="icon" viewBox="0 0 32 32" fill="white"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.627.86 5.062 2.313 7.031L4.938 27.5l5.625-1.406A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 21.75a9.7 9.7 0 0 1-4.95-1.35l-.354-.21-3.338.834.89-3.253-.23-.335A9.7 9.7 0 0 1 6.25 15c0-5.385 4.365-9.75 9.75-9.75S25.75 9.615 25.75 15 21.385 24.75 16 24.75zm5.35-7.29c-.293-.147-1.733-.856-2.002-.953-.268-.098-.463-.147-.658.147-.195.293-.756.953-.927 1.148-.171.196-.342.22-.635.073-.293-.147-1.237-.456-2.357-1.454-.871-.777-1.46-1.736-1.63-2.03-.171-.293-.018-.451.128-.597.132-.132.293-.342.44-.514.146-.171.195-.293.293-.488.098-.196.049-.367-.024-.514-.073-.147-.658-1.587-.902-2.174-.238-.57-.48-.493-.658-.502l-.56-.01c-.196 0-.514.073-.783.367-.268.293-1.026 1.003-1.026 2.443s1.051 2.833 1.197 3.03c.147.195 2.07 3.16 5.017 4.432.701.302 1.248.483 1.675.618.704.224 1.344.192 1.85.117.564-.084 1.733-.708 1.977-1.392.244-.684.244-1.27.171-1.392-.073-.122-.268-.196-.561-.343z"/></svg>
       WhatsApp पर भेजें
     </button>
-
     <button class="share-btn telegram-btn" id="telegramBtn">
       <svg class="icon" viewBox="0 0 24 24" fill="white"><path d="M21.5 4.5L2.7 11.9c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.9.9.9.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.8L23 6.1c.3-1.2-.4-1.8-1.5-1.6z"/></svg>
       Telegram पर भेजें
     </button>
   </div>
-
   <!-- ===== RECEIVER VIEW: jab kisi ne link bheja ===== -->
   <div id="receiverView" class="hidden">
     <p class="subMsg" id="receiverMsg">उन्होंने आपके लिए यह खास शुभकामना भेजी है 🎁</p>
-    <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
   </div>
-
   <!-- ===== नीचे वाला AD — 300x250 ===== -->
   <div class="ad-slot ad-slot-bottom" id="adSlotBottom">
     <script>
@@ -259,11 +239,8 @@
     </script>
     <script src="https://www.highrevenueformat.com/f0cac173bafc51d985c113dfd51e2d3c/invoke.js"></script>
   </div>
-
 </div>
-
 <div class="toast" id="toast">Link copy ho gaya!</div>
-
 <script>
 /* ================================================================
    SETTINGS — बस यहीं बदलो, बाकी पूरी साइट अपने आप अपडेट हो जाएगी
@@ -272,21 +249,17 @@ const IMAGE_FILENAME = "background.gif";   // अपनी फोटो का �
 const OCCASION_NAME  = "Teachers Day";           // यहाँ बदलो: "जन्मदिन", "Teacher's Day", "दीपावली", "होली" — कुछ भी
 const BRAND_TEXT     = "AiMaster";         // अपना ब्रांड/नाम (बिना "की ओर से" के)
 /* ================================================================ */
-
 // इन सबको ऊपर वाले 3 वेरिएबल से ऑटोमेटिक बना दिया जाता है — यहाँ कुछ बदलने की ज़रूरत नहीं
 const HEADING_TEMPLATE = (name) => `<span class="sender-name">${name}</span> की ओर से<br>${OCCASION_NAME} की हार्दिक शुभकामनाएं!`;
 const SHARE_MESSAGE_TEMPLATE = (name, link) =>
   `🎉 *${name}* की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं!\nउन्होंने आपके लिए कुछ खास भेजा है। नीचे दिए लिंक पर क्लिक करें 👇\n${link}`;
 const TELEGRAM_TEXT_TEMPLATE = (name) =>
   `🎉 ${name} की ओर से ${OCCASION_NAME} की हार्दिक शुभकामनाएं! उन्होंने आपके लिए कुछ खास भेजा है।`;
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const canvasWrap = document.getElementById('canvasWrap');
 const loadingDiv = document.getElementById('loadingDiv');
-
 let bgImage = null;
-
 function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   if(bgImage){
@@ -301,7 +274,6 @@ function render(){
     ctx.fillText("background.gif daalein", canvas.width/2, canvas.height/2);
   }
 }
-
 const img = new Image();
 img.onload = function(){
   bgImage = img;
@@ -327,16 +299,13 @@ img.onerror = function(){
   render();
 };
 img.src = IMAGE_FILENAME;
-
 /* ============ URL check: kya koi naam bhej ke aaya hai? ============ */
 const params = new URLSearchParams(window.location.search);
 const senderName = params.get('naam') || params.get('name');
-
 const titleEl = document.getElementById('titleText');
 const brandEl = document.getElementById('brandText');
 const senderView = document.getElementById('senderView');
 const receiverView = document.getElementById('receiverView');
-
 if(senderName){
   // RECEIVER VIEW — kisi ne link bheja hai
   titleEl.innerHTML = HEADING_TEMPLATE(escapeHtml(senderName));
@@ -351,22 +320,15 @@ if(senderName){
   titleEl.textContent = OCCASION_NAME + " की शुभकामनाएं";
   brandEl.textContent = BRAND_TEXT + " की ओर से";
 }
-
 function escapeHtml(str){
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
-
-document.getElementById('createOwnBtn').addEventListener('click', function(){
-  window.location.href = window.location.pathname;
-});
-
 function buildShareLink(name){
   const base = window.location.origin + window.location.pathname;
   return `${base}?naam=${encodeURIComponent(name)}`;
 }
-
 document.getElementById('shareBtn').addEventListener('click', function(){
   const name = document.getElementById('nameInput').value.trim();
   if(!name){
@@ -378,7 +340,6 @@ document.getElementById('shareBtn').addEventListener('click', function(){
   const waLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
   window.open(waLink, '_blank');
 });
-
 document.getElementById('telegramBtn').addEventListener('click', function(){
   const name = document.getElementById('nameInput').value.trim();
   if(!name){
@@ -390,9 +351,7 @@ document.getElementById('telegramBtn').addEventListener('click', function(){
   const tgLink = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
   window.open(tgLink, '_blank');
 });
-
 render();
-
 /* ============================================================================
    AD SLOT AUTO-HIDE — अगर किसी slot में कोई ad code नहीं डाला गया है (यानी
    div खाली है), तो वो जगह अपने आप गायब हो जाएगी। कोई खाली/टूटा बॉक्स नहीं दिखेगा।
@@ -412,24 +371,20 @@ hideEmptyAdSlots();
 // Kuch ad networks apna code thodi der baad (async) inject karte hain, isliye 2 second baad dobara check
 setTimeout(hideEmptyAdSlots, 2000);
 /* ============================================================================ */
-
 /* ============ SPARKLE BACKGROUND (mobile par halka rakha gaya hai) ============ */
 const sparkleCanvas = document.getElementById('sparkleCanvas');
 const sctx = sparkleCanvas.getContext('2d');
 let particles = [];
-
 // Chhoti screen (mobile) par kam particles aur halka glow — smooth performance ke liye
 const isMobile = window.innerWidth < 700;
 const PARTICLE_COUNT = isMobile ? 25 : 60;
 const SHADOW_BLUR = isMobile ? 0 : 6;
-
 function resizeSparkle(){
   sparkleCanvas.width = window.innerWidth;
   sparkleCanvas.height = window.innerHeight;
 }
 resizeSparkle();
 window.addEventListener('resize', resizeSparkle);
-
 function createParticle(){
   return {
     x: Math.random() * sparkleCanvas.width,
@@ -446,7 +401,6 @@ for(let i=0; i<PARTICLE_COUNT; i++){
   p.y = Math.random() * sparkleCanvas.height;
   particles.push(p);
 }
-
 function animateSparkles(){
   sctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
   particles.forEach(p => {
@@ -471,6 +425,5 @@ function animateSparkles(){
 }
 animateSparkles();
 </script>
-
 </body>
 </html>
