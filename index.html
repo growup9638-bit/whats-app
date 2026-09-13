@@ -184,7 +184,6 @@
   <!-- ===== RECEIVER VIEW: jab kisi ne link bheja ===== -->
   <div id="receiverView" class="hidden">
     <p class="subMsg" id="receiverMsg">उन्होंने आपके लिए यह खास शुभकामना भेजी है 🎁</p>
-    <button class="create-own-btn" id="createOwnBtn">✨ अपनी तरफ से भी भेजें</button>
   </div>
 
 </div>
@@ -277,10 +276,6 @@ function escapeHtml(str){
   div.textContent = str;
   return div.innerHTML;
 }
-
-document.getElementById('createOwnBtn').addEventListener('click', function(){
-  window.location.href = window.location.pathname;
-});
 
 function buildShareLink(name){
   const base = window.location.origin + window.location.pathname;
